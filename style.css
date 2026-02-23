@@ -1,0 +1,57 @@
+/* Slopless: Injected Content Styles */
+
+/* AI Overview Hider */
+[data-as="1"],
+div[data-entityid="AI_OVERVIEW"],
+div:has(> [data-as="1"]),
+.MljYf,
+.f67HWc,
+.yPsnN {
+    display: none !important;
+}
+
+/* Injected Slopless Button */
+.slopless-injected-btn {
+    background: linear-gradient(135deg, #1A0B2E, #2D1B4D) !important;
+    color: #fff !important;
+    border: 1px solid #9d50ff !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    margin: 15px 0 !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(157, 80, 255, 0.3) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    z-index: 9999 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.slopless-injected-btn:hover {
+    background: #9d50ff !important;
+    color: #000 !important;
+    transform: translateY(-3px) !important;
+}
+
+/* Verified Human Badge */
+.slopless-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(18, 10, 30, 0.85);
+    backdrop-filter: blur(5px);
+    color: #9d50ff;
+    border: 1px solid rgba(157, 80, 255, 0.5);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 8px;
+    margin-left: 12px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}

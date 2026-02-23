@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slopless: AI-Free Search Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    .custom-year-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      padding: 15px;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    #custom-year-input {
+      background: rgba(157, 80, 255, 0.1);
+      border: 1px solid var(--accent-purple);
+      border-radius: 8px;
+      color: white;
+      padding: 8px 12px;
+      font-size: 16px;
+      font-weight: 700;
+      width: 100px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    #custom-year-input:focus {
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .year-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <img src="slopless_logo.png" alt="Slopless" class="logo-main">
+    <h1 class="title">Slopless: AI-Free Search Results</h1>
+    <p class="desc-full">
+      Makes Your Search Results Human Again without ChatGPT, Gemini or any other AI.
+      Takes You back to the <strong>Human Era</strong> (Pre-2022) when AI Slop and content factories didn't exist.
+    </p>
+  </div>
+
+  <!-- VALUE PROPS (PILLS) -->
+  <div class="pills-container">
+    <div class="pill">✓ Time Machine for Internet</div>
+    <div class="pill">★ Zero AI Content & Slop</div>
+    <div class="pill">🛡️ Remove AI summaries from search</div>
+    <div class="pill">🏛️ Old Archive-Safe Scan</div>
+  </div>
+
+  <div class="custom-year-card">
+    <span class="year-label">SELECT YEAR OF WHICH YOU WANT SEARCH RESULTS:</span>
+    <input type="number" id="custom-year-input" min="1990" max="2030" value="2022">
+  </div>
+  <div id="ai-warning"
+    style="display: none; color: #ff5555; font-size: 11px; font-weight: 700; margin-top: -15px; margin-bottom: 20px; padding: 10px; border: 1px solid #ff5555; border-radius: 8px; background: rgba(255, 85, 85, 0.1); line-height: 1.4;">
+    ⚠️ YOU SELECTED THE YEAR IN WHICH CHATGPT, GEMINI AND OTHER AI EXISTED SO RESULTS MIGHT INCLUDE AI CONTENT OR SLOP
+  </div>
+
+  <div class="section-header">
+    <span>2. Execute Verified Scan</span>
+    <div class="line"></div>
+  </div>
+
+  <div class="search-grid">
+    <!-- GOOGLE -->
+    <div class="glass-card">
+      <div class="site-info"><span class="site-name">Google Search</span></div>
+      <div class="search-row">
+        <input type="text" class="search-input" data-site="google" placeholder="Scan Google human results...">
+        <button class="search-btn" data-site="google">SCAN</button>
+      </div>
+    </div>
+    <!-- DUCKDUCKGO -->
+    <div class="glass-card">
+      <div class="site-info"><span class="site-name">DuckDuckGo</span></div>
+      <div class="search-row">
+        <input type="text" class="search-input" data-site="duckduckgo" placeholder="Private human search...">
+        <button class="search-btn" data-site="duckduckgo">SCAN</button>
+      </div>
+    </div>
+    <!-- REDDIT -->
+    <div class="glass-card">
+      <div class="site-info"><span class="site-name">Reddit (Intel)</span></div>
+      <div class="search-row">
+        <input type="text" class="search-input" data-site="reddit" placeholder="Find real human discussions...">
+        <button class="search-btn" data-site="reddit">SCAN</button>
+      </div>
+    </div>
+    <!-- QUORA -->
+    <div class="glass-card">
+      <div class="site-info"><span class="site-name">Quora</span></div>
+      <div class="search-row">
+        <input type="text" class="search-input" data-site="quora" placeholder="Real people answers...">
+        <button class="search-btn" data-site="quora">SCAN</button>
+      </div>
+    </div>
+    <!-- STACK EXCHANGE -->
+    <div class="glass-card">
+      <div class="site-info"><span class="site-name">Stack Exchange</span></div>
+      <div class="search-row">
+        <input type="text" class="search-input" data-site="stackexchange" placeholder="Pure human solutions...">
+        <button class="search-btn" data-site="stackexchange">SCAN</button>
+      </div>
+    </div>
+    <!-- PINTEREST -->
+    <div class="glass-card">
+      <div class="site-info"><span class="site-name">Pinterest</span></div>
+      <div class="search-row">
+        <input type="text" class="search-input" data-site="pinterest" placeholder="Human-made art & ideas...">
+        <button class="search-btn" data-site="pinterest">SCAN</button>
+      </div>
+    </div>
+    <!-- YOUTUBE -->
+    <div class="glass-card">
+      <div class="site-info"><span class="site-name">YouTube</span></div>
+      <div class="search-row">
+        <input type="text" class="search-input" data-site="youtube" placeholder="Search human-era videos...">
+        <button class="search-btn" data-site="youtube">SCAN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span>3. Additional Features (Off by Default)</span>
+    <div class="line"></div>
+  </div>
+
+  <div class="glass-card">
+    <div class="feature-box">
+      <div class="feature-details">
+        <span class="feature-name">AI Overview Hider</span>
+        <span class="feature-desc">Automatically removes Google’s Gemini/SGE summaries to prioritize real website
+          links.</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggle-hide-ai">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="feature-box" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-subtle);">
+      <div class="feature-details">
+        <span class="feature-name">Verified Human Badges</span>
+        <span class="feature-desc">Analyzes timestamps in search results and adds a ★ badge to content confirmed
+          pre-2022.</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggle-badges">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="feature-box" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-subtle);">
+      <div class="feature-details">
+        <span class="feature-name">Right-Click Context Search</span>
+        <span class="feature-desc">Highlight any text on any site and right-click to instantly tunnel it into a human
+          search.</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggle-context">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- PROMO -->
+  <div class="glass-card"
+    style="background: linear-gradient(135deg, rgba(255,170,0,0.06), rgba(255,85,85,0.06)); border-color: rgba(255,170,0,0.2);">
+    <div style="text-align: center; margin-bottom: 8px;">
+      <span
+        style="display: inline-block; background: rgba(255,170,0,0.12); color: #ffaa00; font-size: 9px; font-weight: 800; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; letter-spacing: 1.5px;">Promotion</span>
+    </div>
+    <p style="font-size: 12px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 6px;">Need ChatGPT,
+      Adobe or Netflix at 85% Off?</p>
+    <p
+      style="font-size: 11px; color: var(--text-secondary); text-align: center; line-height: 1.5; margin-bottom: 10px;">
+      Buy ChatGPT Plus, Adobe Creative Cloud, Microsoft 365, Grammarly, Canva Pro, Netflix, and 50+ other premium tools
+      from the most trusted provider. 2,000+ happy customers. Prices start at ₹149.
+    </p>
+    <div style="text-align: center;">
+      <a href="https://take.app/viralzoom" target="_blank"
+        style="display: inline-block; background: linear-gradient(135deg, #ffaa00, #ff6600); color: #000; padding: 8px 20px; border-radius: 8px; font-weight: 800; font-size: 11px; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;">Browse
+        Deals</a>
+    </div>
+    <p style="font-size: 10px; color: var(--text-secondary); text-align: center; margin-top: 8px;">
+      Tool not listed? DM <a href="https://instagram.com/viral_zoom_agency" target="_blank"
+        style="color: #ffaa00; text-decoration: none; font-weight: 700;">@viral_zoom_agency</a>
+    </p>
+  </div>
+
+  <div class="footer">
+    <p class="footer-text">
+      BUILT FOR HUMANITY WITH 💖 BY
+      <a href="https://instagram.com/this_is_ali_r" target="_blank" class="footer-link">@THIS_IS_ALI_R</a>
+    </p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

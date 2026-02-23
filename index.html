@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slopless: Remove AI Content From Search Results | Get Pre-2022 Human Search Results</title>
+    <meta name="description"
+        content="Slopless removes AI generated content from Google, Reddit, DuckDuckGo, YouTube, Pinterest and Stack Exchange. Get pure human search results from before ChatGPT existed. Free browser extension and web tool.">
+    <meta name="keywords"
+        content="remove AI from search, block AI content, pre-2022 search, human search results, AI slop remover, block ChatGPT content, remove Gemini overview, AI free search, human era search">
+    <meta name="author" content="@this_is_ali_r">
+    <meta property="og:title" content="Slopless: Remove AI Content From Search Results">
+    <meta property="og:description"
+        content="Get pure human search results from before ChatGPT. Free browser extension and web tool.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Slopless: AI-Free Search Results">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050208;
+            --card: rgba(18, 10, 30, 0.75);
+            --purple: #9d50ff;
+            --purple-dim: rgba(157, 80, 255, 0.15);
+            --purple-glow: rgba(157, 80, 255, 0.3);
+            --white: #ffffff;
+            --grey: #bbb2d1;
+            --border: rgba(157, 80, 255, 0.15);
+            --border-h: rgba(157, 80, 255, 0.5);
+            --red: #ff5555;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                linear-gradient(rgba(157, 80, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(157, 80, 255, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Glow Orbs */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body::before {
+            top: -150px;
+            right: -150px;
+            background: radial-gradient(circle, rgba(157, 80, 255, 0.12), transparent 70%);
+        }
+
+        body::after {
+            bottom: -200px;
+            left: -200px;
+            background: radial-gradient(circle, rgba(157, 80, 255, 0.08), transparent 70%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* NAV */
+        nav {
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .nav-brand span {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--white);
+        }
+
+        .nav-cta {
+            background: var(--purple);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--purple-glow);
+        }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 80px 0 50px;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 30px var(--purple-glow));
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        h1 .highlight {
+            color: var(--purple);
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--grey);
+            max-width: 600px;
+            margin: 0 auto 35px;
+        }
+
+        .hero-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-pill {
+            background: var(--purple-dim);
+            color: var(--purple);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 8px 18px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--purple);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px var(--purple-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 16px 36px;
+            border-radius: 14px;
+            border: 1px solid var(--border-h);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--purple-dim);
+        }
+
+        /* PROMO SECTION */
+        .promo-section {
+            margin: 50px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.08), rgba(255, 85, 85, 0.08));
+            border: 1px solid rgba(255, 170, 0, 0.25);
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .promo-tag {
+            display: inline-block;
+            background: rgba(255, 170, 0, 0.15);
+            color: #ffaa00;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+        }
+
+        .promo-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .promo-text {
+            font-size: 14px;
+            color: var(--grey);
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .promo-tools {
+            font-size: 12px;
+            color: #ffaa00;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .promo-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffaa00, #ff6600);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+        }
+
+        .promo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 170, 0, 0.3);
+        }
+
+        .promo-dm {
+            font-size: 12px;
+            color: var(--grey);
+        }
+
+        .promo-dm a {
+            color: #ffaa00;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* SECTION TITLES */
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: var(--grey);
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+
+        /* SEARCH TOOL */
+        .tool-section {
+            padding: 60px 0;
+        }
+
+        .tool-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        .year-picker {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .year-picker label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--white);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        #web-year-input {
+            background: var(--purple-dim);
+            border: 1px solid var(--purple);
+            border-radius: 10px;
+            color: white;
+            padding: 12px 18px;
+            font-size: 18px;
+            font-weight: 700;
+            width: 120px;
+            outline: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        #web-year-input:focus {
+            box-shadow: 0 0 15px var(--purple-glow);
+        }
+
+        #web-ai-warning {
+            display: none;
+            color: var(--red);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding: 10px 14px;
+            border: 1px solid var(--red);
+            border-radius: 10px;
+            background: rgba(255, 85, 85, 0.08);
+            line-height: 1.4;
+        }
+
+        .search-engines-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .search-engines-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .hero {
+                padding: 50px 0 30px;
+            }
+
+            .tool-card {
+                padding: 24px;
+            }
+        }
+
+        .engine-card {
+            background: rgba(157, 80, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .engine-card:hover {
+            border-color: var(--border-h);
+        }
+
+        .engine-name {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--purple);
+            margin-bottom: 10px;
+        }
+
+        .engine-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .engine-row input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            padding: 10px 0;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .engine-row input:focus {
+            border-color: var(--purple);
+        }
+
+        .engine-row button {
+            background: var(--white);
+            color: #000;
+            border: none;
+            padding: 0 18px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .engine-row button:hover {
+            background: var(--purple);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* INSTALL GUIDE */
+        .install-section {
+            padding: 60px 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .step-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px 28px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--border-h);
+        }
+
+        .step-num {
+            background: var(--purple);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            font-size: 13px;
+            color: var(--grey);
+            line-height: 1.5;
+        }
+
+        /* FEATURES */
+        .features-section {
+            padding: 60px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 700px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-h);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 14px;
+        }
+
+        .feature-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .feature-card p {
+            font-size: 12px;
+            color: var(--grey);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 50px 0 30px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: var(--grey);
+        }
+
+        footer a {
+            color: var(--purple);
+            text-decoration: none;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- NAV -->
+        <nav>
+            <a href="#" class="nav-brand">
+                <img src="slopless_logo.png" alt="Slopless">
+                <span>Slopless</span>
+            </a>
+            <a href="#download" class="nav-cta">Download Extension</a>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+            <img src="slopless_logo.png" alt="Slopless Logo" class="hero-logo">
+            <h1>Make Your Search Results <span class="highlight">Human Again</span></h1>
+            <p class="hero-desc">
+                Slopless removes AI generated content from your search results. No more ChatGPT answers. No more Gemini
+                overviews. No more AI slop. Pure human content from the real internet.
+            </p>
+            <div class="hero-pills">
+                <span class="hero-pill">Time Machine for Internet</span>
+                <span class="hero-pill">Zero AI Content</span>
+                <span class="hero-pill">Removes AI Summaries</span>
+                <span class="hero-pill">7 Search Engines</span>
+                <span class="hero-pill">100% Free</span>
+            </div>
+            <div class="hero-btns">
+                <a href="#tool" class="btn-primary">Use Online Tool</a>
+                <a href="#download" class="btn-secondary">Get Browser Extension</a>
+            </div>
+        </section>
+
+        <!-- PROMO -->
+        <section class="promo-section" id="promo">
+            <span class="promo-tag">Sponsored Promotion</span>
+            <h2 class="promo-title">Need ChatGPT, Adobe, Netflix or Canva Pro at 85% Off?</h2>
+            <p class="promo-text">
+                If you want to buy premium tools like ChatGPT Plus, Adobe Creative Cloud, Microsoft 365, Grammarly,
+                Envato Elements, Freepik Premium, Netflix, Prime Video, Canva Pro, or CapCut Pro at a fraction of the
+                original price, Viral Zoom has you covered. They are the most trusted premium subscription provider on
+                the internet right now. Over 2,000 customers served with zero complaints. Prices start as low as ₹149.
+            </p>
+            <p class="promo-tools">ChatGPT Plus | Adobe CC | Microsoft 365 | Grammarly | Envato | Freepik | Netflix |
+                Prime Video | Canva Pro | CapCut Pro</p>
+            <a href="https://take.app/viralzoom" target="_blank" class="promo-btn">Browse All Deals at Viral Zoom</a>
+            <p class="promo-dm">Tool not listed? DM <a href="https://instagram.com/viral_zoom_agency"
+                    target="_blank">@viral_zoom_agency</a> on Instagram. They will arrange any AI tool you need at the
+                lowest price possible.</p>
+        </section>
+
+        <!-- ONLINE TOOL -->
+        <section class="tool-section" id="tool">
+            <h2 class="section-title">Search the Human Era</h2>
+            <p class="section-sub">Pick your year. Pick your engine. Get results from before AI existed.</p>
+
+            <div class="tool-card">
+                <div class="year-picker">
+                    <label for="web-year-input">SELECT YEAR OF WHICH YOU WANT SEARCH RESULTS:</label>
+                    <input type="number" id="web-year-input" min="1990" max="2030" value="2022">
+                </div>
+                <div id="web-ai-warning">
+                    YOU SELECTED THE YEAR IN WHICH CHATGPT, GEMINI AND OTHER AI EXISTED SO RESULTS MIGHT INCLUDE AI
+                    CONTENT OR SLOP
+                </div>
+
+                <div class="search-engines-grid">
+                    <div class="engine-card">
+                        <div class="engine-name">Google</div>
+                        <div class="engine-row">
+                            <input type="text" data-engine="google" placeholder="Search Google...">
+                            <button data-engine="google">Scan</button>
+                        </div>
+                    </div>
+                    <div class="engine-card">
+                        <div class="engine-name">DuckDuckGo</div>
+                        <div class="engine-row">
+                            <input type="text" data-engine="duckduckgo" placeholder="Search DuckDuckGo...">
+                            <button data-engine="duckduckgo">Scan</button>
+                        </div>
+                    </div>
+                    <div class="engine-card">
+                        <div class="engine-name">Reddit</div>
+                        <div class="engine-row">
+                            <input type="text" data-engine="reddit" placeholder="Search Reddit...">
+                            <button data-engine="reddit">Scan</button>
+                        </div>
+                    </div>
+                    <div class="engine-card">
+                        <div class="engine-name">Quora</div>
+                        <div class="engine-row">
+                            <input type="text" data-engine="quora" placeholder="Search Quora...">
+                            <button data-engine="quora">Scan</button>
+                        </div>
+                    </div>
+                    <div class="engine-card">
+                        <div class="engine-name">Stack Exchange</div>
+                        <div class="engine-row">
+                            <input type="text" data-engine="stackexchange" placeholder="Search Stack Exchange...">
+                            <button data-engine="stackexchange">Scan</button>
+                        </div>
+                    </div>
+                    <div class="engine-card">
+                        <div class="engine-name">Pinterest</div>
+                        <div class="engine-row">
+                            <input type="text" data-engine="pinterest" placeholder="Search Pinterest...">
+                            <button data-engine="pinterest">Scan</button>
+                        </div>
+                    </div>
+                    <div class="engine-card">
+                        <div class="engine-name">YouTube</div>
+                        <div class="engine-row">
+                            <input type="text" data-engine="youtube" placeholder="Search YouTube...">
+                            <button data-engine="youtube">Scan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="features-section">
+            <h2 class="section-title">What Slopless Does</h2>
+            <p class="section-sub">Every feature exists to give you back the human internet.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>AI Overview Hider</h3>
+                    <p>Removes Google's Gemini and SGE summaries. You see real website links, not AI generated text
+                        blocks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">★</div>
+                    <h3>Verified Human Badges</h3>
+                    <p>Shows a gold badge next to search results confirmed to be from before November 2022.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖱️</div>
+                    <h3>Right Click Search</h3>
+                    <p>Highlight any text on any website. Right click. Search the human era instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Custom Year Filter</h3>
+                    <p>Pick any year from 1990 to 2022. All search results come from that year or earlier.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏳</div>
+                    <h3>Injected Button</h3>
+                    <p>A "Go to Before 2022" button appears on Google search pages automatically. One click to filter.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>7 Search Engines</h3>
+                    <p>Google, DuckDuckGo, Reddit, Quora, Stack Exchange, Pinterest, and YouTube. All filtered.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOWNLOAD + INSTALL -->
+        <section class="install-section" id="download">
+            <h2 class="section-title">Download and Install</h2>
+            <p class="section-sub">Get Slopless running on your browser in under 60 seconds.</p>
+
+            <div style="text-align: center; margin-bottom: 35px;">
+                <a href="https://github.com/AliRash3ed/Slopless-AI-Free-Search-Results/archive/refs/heads/main.zip"
+                    class="btn-primary" id="download-btn" download>
+                    Download Slopless Extension (.zip)
+                </a>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h3>Download the ZIP File</h3>
+                        <p>Click the purple "Download" button above. A .zip file will be saved to your computer. Extract
+                            or unzip this file to a folder you will remember (like Desktop or Documents).</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h3>Open Your Browser's Extension Page</h3>
+                        <p>For Chrome: Type <strong>chrome://extensions</strong> in your address bar and press Enter.
+                            For Edge: Type <strong>edge://extensions</strong>. For Brave: Type
+                            <strong>brave://extensions</strong>.
+                        </p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h3>Enable Developer Mode</h3>
+                        <p>Find the "Developer mode" toggle in the top right corner of the extensions page. Turn it ON.
+                            This allows your browser to load extensions from local files.</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h3>Load the Extension</h3>
+                        <p>Click "Load unpacked" in the top left. Navigate to the folder where you extracted the ZIP
+                            file. Select the folder and click "Open." Slopless will appear in your extensions list.</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">5</div>
+                    <div class="step-content">
+                        <h3>Pin It (Optional)</h3>
+                        <p>Click the puzzle icon in the top right of your browser toolbar. Find "Slopless" in the
+                            dropdown list. Click the pin icon to keep Slopless visible at all times for quick access.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p style="margin-bottom: 10px;">
+                Built for Humanity with Love by <a href="https://instagram.com/this_is_ali_r"
+                    target="_blank">@this_is_ali_r</a>
+            </p>
+            <p>&copy; 2024 Slopless. Open Source. Free Forever.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Year picker warning
+        const yearInput = document.getElementById('web-year-input');
+        const warning = document.getElementById('web-ai-warning');
+
+        yearInput.addEventListener('input', () => {
+            warning.style.display = parseInt(yearInput.value) > 2022 ? 'block' : 'none';
+        });
+
+        // Search function (same logic as extension)
+        function getCutoff(year) {
+            if (year === '2022') return '11/30/2022';
+            return '12/31/' + year;
+        }
+        function getDDG(year) {
+            if (year === '2022') return '2022-11-30';
+            return year + '-12-31';
+        }
+
+        function doSearch(engine) {
+            const input = document.querySelector(`input[data-engine="${engine}"]`);
+            const q = input.value.trim();
+            if (!q) return;
+
+            const y = yearInput.value;
+            const d = getCutoff(y);
+            const dd = getDDG(y);
+            let url = '';
+
+            switch (engine) {
+                case 'google':
+                    url = `https://www.google.com/search?q=${encodeURIComponent(q)}&tbs=cdr:1,cd_max:${d}`;
+                    break;
+                case 'duckduckgo':
+                    url = `https://duckduckgo.com/?q=${encodeURIComponent(q)}&df=1990-01-01..${dd}`;
+                    break;
+                case 'reddit':
+                    url = `https://www.google.com/search?q=site:reddit.com+${encodeURIComponent(q)}&tbs=cdr:1,cd_max:${d}`;
+                    break;
+                case 'quora':
+                    url = `https://www.google.com/search?q=site:quora.com+${encodeURIComponent(q)}&tbs=cdr:1,cd_max:${d}`;
+                    break;
+                case 'stackexchange':
+                    url = `https://www.google.com/search?q=site:stackexchange.com+${encodeURIComponent(q)}&tbs=cdr:1,cd_max:${d}`;
+                    break;
+                case 'pinterest':
+                    url = `https://www.google.com/search?q=site:pinterest.com+${encodeURIComponent(q)}&tbs=cdr:1,cd_max:${d}`;
+                    break;
+                case 'youtube':
+                    url = `https://www.google.com/search?q=site:youtube.com+${encodeURIComponent(q)}&tbs=cdr:1,cd_max:${d}`;
+                    break;
+            }
+
+            if (url) window.open(url, '_blank');
+        }
+
+        // Bind buttons
+        document.querySelectorAll('.engine-row button').forEach(btn => {
+            btn.addEventListener('click', () => doSearch(btn.dataset.engine));
+        });
+
+        // Bind enter key
+        document.querySelectorAll('.engine-row input').forEach(inp => {
+            inp.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') doSearch(inp.dataset.engine);
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>
